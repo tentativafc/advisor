@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+
+  advisor-config-server:
+    build:
+      context: advisor-config-server
+      dockerfile: Dockerfile
+    ports:
+      - '8888:8888'
+    restart: always
+
+  advisor-discovery-server:
+    build:
+      context: advisor-discovery-service
+      dockerfile: Dockerfile
+    ports:
+      - '9777:9777'
+    depends_on:
+      - advisor-config-server
+    restart: always
+
+  advisor-service:
+    build:
+      context: advisor-service
+      dockerfile: Dockerfile
+    ports:
+      - '9888:9888'
+    restart: always
+    depends_on:
+      - advisor-config-server
+      - advisor-discovery-server
