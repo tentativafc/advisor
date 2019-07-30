@@ -18,4 +18,7 @@ Project to get advices from Assets, using microservices.
 docker-compose up --build
 ```
 
+### Utilities
+
+https://docs.docker.com/compose/startup-order/
 

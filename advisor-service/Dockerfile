@@ -6,4 +6,6 @@ COPY . .
 
 RUN "ls"
 
-CMD ["mvn", "spring-boot:run"]
+ENV SPRING_PROFILES_ACTIVE=prod
+
+CMD ["mvn", "clean", "spring-boot:run"]

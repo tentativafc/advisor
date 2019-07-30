@@ -2,31 +2,42 @@ version: '3'
 
 services:
 
-  advisor-config-server:
+  config-server:
     build:
       context: advisor-config-server
       dockerfile: Dockerfile
+    restart: always
     ports:
       - '8888:8888'
-    restart: always
+    volumes:
+      - maven-repo:/root/.m2
 
-  advisor-discovery-server:
+  discovery-server:
     build:
-      context: advisor-discovery-service
+      context: advisor-discovery-server
       dockerfile: Dockerfile
+    restart: always
     ports:
       - '9777:9777'
+    volumes:
+      - maven-repo:/root/.m2
     depends_on:
-      - advisor-config-server
-    restart: always
+      - config-server
+    command: ["./wait-for-it.sh", "config-server:8888", "--", "mvn", "clean", "compile", "spring-boot:run"]
 
-  advisor-service:
+  advisor:
     build:
       context: advisor-service
       dockerfile: Dockerfile
+#    restart: always
     ports:
       - '9888:9888'
-    restart: always
+    volumes:
+      - maven-repo:/root/.m2
     depends_on:
-      - advisor-config-server
-      - advisor-discovery-server
+      - config-server
+      - discovery-server
+    command: ["./wait-for-it.sh", "discovery-server:9777", "--", "mvn", "clean", "compile", "spring-boot:run"]
+
+volumes:
+  maven-repo:
