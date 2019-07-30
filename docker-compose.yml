@@ -2,6 +2,11 @@ version: '3'
 
 services:
 
+  redis:
+    image: 'redis'
+    ports:
+      - "6379:6379"
+
   config-server:
     build:
       context: advisor-config-server
@@ -11,6 +16,9 @@ services:
       - '8888:8888'
     volumes:
       - maven-repo:/root/.m2
+    depends_on:
+      - redis
+    command: ["./wait-for-it.sh", "redis:6379", "--", "mvn", "spring-boot:run"]
 
   discovery-server:
     build:
@@ -23,18 +31,18 @@ services:
       - maven-repo:/root/.m2
     depends_on:
       - config-server
-    command: ["./wait-for-it.sh", "config-server:8888", "--", "mvn", "clean", "compile", "spring-boot:run"]
+    command: ["./wait-for-it.sh", "config-server:8888", "--", "mvn", "spring-boot:run"]
 
   advisor:
     build:
       context: advisor-service
       dockerfile: Dockerfile
-#    restart: always
     ports:
       - '9888:9888'
     volumes:
       - maven-repo:/root/.m2
     depends_on:
+      - redis
       - config-server
       - discovery-server
     command: ["./wait-for-it.sh", "discovery-server:9777", "--", "mvn", "clean", "compile", "spring-boot:run"]
