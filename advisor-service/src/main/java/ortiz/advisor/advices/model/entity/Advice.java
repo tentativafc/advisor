@@ -1,4 +1,4 @@
-package ortiz.advisor.model.entity;
+package ortiz.advisor.advices.model.entity;
 
 import org.springframework.data.redis.core.RedisHash;
 

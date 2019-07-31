@@ -1,4 +1,4 @@
-package ortiz.advisor;
+package ortiz.advisor.advices;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @SpringBootApplication
-
 @EnableDiscoveryClient
 @RestController
 public class Main {
@@ -25,7 +24,6 @@ public class Main {
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
     }
-
 
     @RequestMapping("/")
     public String helloWorld() {

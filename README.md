@@ -5,12 +5,14 @@ Project to get advices from Assets, using microservices.
 
 ### Services and port numbers
 
-| Service               | Port Number     |
-|-----------------------|---------------- |
-| Config Server         |            8888 |
-| Discovery Server      |            9777 |
-| Advisor Service       |            9888 |
-| Advisor Auth Service  |            9666 |
+| Service               | Port Number            |
+|-----------------------|----------------        |
+| Postgres              |            5444        |
+| Redis                 |            6379        |
+| Config Server         |            8888 - 8889 |
+| Discovery Server      |            9777 - 9799 |
+| Advisor Service       |            9888 - 9899 |
+| Advisor Auth Service  |            9666 - 9699 |
 | Frontend              |            4200 |
 | Nginx Interface       |            5301 |
 
