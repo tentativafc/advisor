@@ -55,6 +55,19 @@ services:
       - discovery-server
     command: ["./wait-for-it.sh", "discovery-server:9777", "--", "mvn", "clean", "compile", "spring-boot:run"]
 
+  advisor-auth:
+      build:
+        context: advisor-service
+        dockerfile: Dockerfile
+      ports:
+        - '9666:9666'
+      volumes:
+        - maven-repo:/root/.m2
+      depends_on:
+        - config-server
+        - discovery-server
+      command: ["./wait-for-it.sh", "discovery-server:9777", "--", "mvn", "clean", "compile", "spring-boot:run"]
+
   frontend:
     build:
       context: advisor-frontend
