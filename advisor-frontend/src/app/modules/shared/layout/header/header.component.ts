@@ -20,10 +20,16 @@ export class HeaderComponent implements OnInit {
 
   constructor(private authenticationService: AuthenticationService, private storageService: StorageService, private ref: ChangeDetectorRef) { }
 
-  userSessionDetailsHandler(event: UserSessionDetails) {
+  userSigninHandler(event: UserSessionDetails) {
     this.authenticated = true;
     this.userSessionDetails = event;
     this.storageService.saveObjectItem("advisor_user_session_details", this.userSessionDetails);
+    this.ref.detectChanges();
+  }
+
+  userSignoutHandler(event: null) {
+    this.authenticated = false;
+    this.storageService.removeItem("advisor_user_session_details");
     this.ref.detectChanges();
   }
 

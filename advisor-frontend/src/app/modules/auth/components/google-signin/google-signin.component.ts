@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ElementRef, Output } from '@angular/core';
+import { Component, AfterViewInit, ElementRef, Output, HostListener } from '@angular/core';
 import { UserSessionDetails } from 'src/app/modules/shared/model/user-session-details';
 import { EventEmitter } from "@angular/core";
 
@@ -23,7 +23,7 @@ export class GoogleSigninComponent implements AfterViewInit {
 
   public auth2: any;
 
-googleInit() {
+  googleInit() {
     gapi.load('auth2', () => {
       this.auth2 = gapi.auth2.init({
         client_id: this.clientId,
@@ -45,8 +45,7 @@ googleInit() {
       sessionDetails.email = profile.getEmail();
       sessionDetails.image_url = profile.getImageUrl();
 
-      console.log("Return from google" + sessionDetails);
-      this.userSessionDetails.emit(sessionDetails);
+      this.signin.emit(sessionDetails);
 
     }, (err) => {
       console.log(JSON.stringify(err, undefined, 2));
@@ -54,10 +53,10 @@ googleInit() {
   }
 
   @Output()
-  private userSessionDetails: EventEmitter<UserSessionDetails>;
+  private signin: EventEmitter<UserSessionDetails>;
 
   constructor(private element: ElementRef) {
-    this.userSessionDetails = new EventEmitter()
+    this.signin = new EventEmitter()
   }
 
   ngAfterViewInit(): void {
