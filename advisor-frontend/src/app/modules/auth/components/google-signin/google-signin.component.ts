@@ -23,7 +23,7 @@ export class GoogleSigninComponent implements AfterViewInit {
 
   public auth2: any;
 
-  public googleInit() {
+googleInit() {
     gapi.load('auth2', () => {
       this.auth2 = gapi.auth2.init({
         client_id: this.clientId,
@@ -34,7 +34,7 @@ export class GoogleSigninComponent implements AfterViewInit {
     });
   }
 
-  public attachSignin(element) {
+  attachSignin(element) {
     this.auth2.attachClickHandler(element, {}, (googleUser) => {
       let profile = googleUser.getBasicProfile();
 

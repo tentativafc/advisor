@@ -10,10 +10,8 @@ export class AppComponent implements OnInit {
 
   title = 'Advisor App';
 
-  authenticated = false;
-
   constructor(private titleService: Title) {
-    titleService.setTitle(this.title);
+    this.titleService.setTitle(this.title);
   }
 
   ngOnInit(): void {

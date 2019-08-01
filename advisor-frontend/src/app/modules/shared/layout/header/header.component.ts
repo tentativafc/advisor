@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { StorageService } from '../../storage.service';
 import { UserSessionDetails } from '../../model/user-session-details';
 import { AuthenticationService } from 'src/app/modules/auth/authentication.service';
+import { ChangeDetectorRef } from '@angular/core'
 
 @Component({
   selector: 'app-header',
@@ -10,21 +11,33 @@ import { AuthenticationService } from 'src/app/modules/auth/authentication.servi
 })
 export class HeaderComponent implements OnInit {
 
-  @Input() public title: string;
+  @Input()
+  title: string;
 
-  public authenticated: boolean;
+  authenticated: boolean = false;
 
-  public userSessionDetails: UserSessionDetails;
+  userSessionDetails: UserSessionDetails;
 
-  // constructor(private authenticationService: AuthenticationService, private storageService: StorageService) { }
+  constructor(private authenticationService: AuthenticationService, private storageService: StorageService, private ref: ChangeDetectorRef) { }
 
   userSessionDetailsHandler(event: UserSessionDetails) {
     this.authenticated = true;
     this.userSessionDetails = event;
+    this.storageService.saveObjectItem("advisor_user_session_details", this.userSessionDetails);
+    this.ref.detectChanges();
   }
 
   ngOnInit() {
     this.authenticated = false;
+    this.userSessionDetails = this.storageService.getObjectItem('advisor_user_session_details');
+    if (this.userSessionDetails) {
+      this.authenticated = true;
+    }
+    // this.authenticationService.validateToken(this.userSessionDetails).subscribe((data) => console.log(data));
+  }
+
+  onClick() {
+    this.authenticated = !this.authenticated;
   }
 
 }
