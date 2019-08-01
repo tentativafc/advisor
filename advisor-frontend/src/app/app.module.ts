@@ -3,8 +3,9 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AuthModule } from './pages/auth/auth.module';
-import { AdviceModule } from './pages/advice/advice.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { AdviceModule } from './modules/advice/advice.module';
+import { SharedModule } from './modules/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { AdviceModule } from './pages/advice/advice.module';
     BrowserModule,
     AppRoutingModule,
     AuthModule,
+    SharedModule,
     AdviceModule
   ],
   providers: [],
