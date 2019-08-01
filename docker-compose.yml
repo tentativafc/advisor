@@ -19,13 +19,13 @@ services:
     ports:
       - '5444:5432'
 
-  nginx:
-    build:
-      dockerfile: Dockerfile
-      context: nginx
-    restart: always
-    ports:
-      - '3051:80'
+#  nginx:
+#    build:
+#      dockerfile: Dockerfile
+#      context: nginx
+#    restart: always
+#    ports:
+#      - '3051:80'
 
   config-server:
     build:
@@ -80,12 +80,12 @@ services:
 #        - discovery-server
 #      command: ["./wait-for-it.sh", "discovery-server:9777", "--", "mvn", "clean", "compile", "spring-boot:run"]
 
-  frontend:
-    build:
-      context: advisor-frontend
-      dockerfile: Dockerfile
-    ports:
-      - '4200:4200'
+#  frontend:
+#    build:
+#      context: advisor-frontend
+#      dockerfile: Dockerfile
+#    ports:
+#      - '4200:4200'
 
 volumes:
   maven-repo:
