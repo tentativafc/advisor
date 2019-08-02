@@ -1,4 +1,5 @@
-import { Component, OnInit, Output, EventEmitter, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, AfterViewInit, NgZone } from '@angular/core';
+import { environment } from '../../../../../environments/environment';
 
 declare const gapi: any;
 
@@ -9,18 +10,12 @@ declare const gapi: any;
 })
 export class GoogleSignoutComponent implements AfterViewInit {
 
-  private clientId: string = '842559739559-44i02i0se3q9a1j06ns081731phou72t.apps.googleusercontent.com';
-
-  private scope = [
-    'profile',
-  ].join(' ');
-
   auth2: any;
 
   @Output()
   private signout: EventEmitter<null> = new EventEmitter();
 
-  constructor() { }
+  constructor(private ngZone: NgZone) { }
 
   ngAfterViewInit(): void {
     this.googleInit();
@@ -28,16 +23,18 @@ export class GoogleSignoutComponent implements AfterViewInit {
 
   signOutHandler() {
     this.auth2.signOut().then(() => {
-      this.signout.emit(null);
+      this.ngZone.run(()=>{
+        this.signout.emit(null);
+      })
     });
   }
 
   googleInit() {
     gapi.load('auth2', () => {
       this.auth2 = gapi.auth2.init({
-        client_id: this.clientId,
+        client_id: environment.google_client_id,
         cookiepolicy: 'single_host_origin',
-        scope: this.scope
+        scope: environment.google_api_profiles
       });
     });
   }

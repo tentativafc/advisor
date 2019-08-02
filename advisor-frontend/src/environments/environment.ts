@@ -4,7 +4,13 @@
 
 export const environment = {
   production: false,
-  api_url: 'https://localhost:4200/'
+  api_url: 'https://localhost:4200/',
+  google_client_id: '842559739559-44i02i0se3q9a1j06ns081731phou72t.apps.googleusercontent.com',
+  google_api_profiles: [
+    'profile',
+    'email',
+    'https://www.googleapis.com/auth/plus.me',
+  ].join(' ')
 };
 
 /*

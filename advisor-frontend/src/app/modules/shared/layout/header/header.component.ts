@@ -18,19 +18,23 @@ export class HeaderComponent implements OnInit {
 
   userSessionDetails: UserSessionDetails;
 
-  constructor(private authenticationService: AuthenticationService, private storageService: StorageService, private ref: ChangeDetectorRef) { }
+  constructor(private storageService: StorageService) { }
+  // constructor(private authenticationService: AuthenticationService, private storageService: StorageService, private ref: ChangeDetectorRef) { }
 
   userSigninHandler(event: UserSessionDetails) {
+    this.authenticated = null;
     this.authenticated = true;
     this.userSessionDetails = event;
     this.storageService.saveObjectItem("advisor_user_session_details", this.userSessionDetails);
-    this.ref.detectChanges();
+    // this.ref.detectChanges();
   }
 
   userSignoutHandler(event: null) {
+    console.log("######## MAMA SIGNOUT");
+    this.authenticated = null;
     this.authenticated = false;
     this.storageService.removeItem("advisor_user_session_details");
-    this.ref.detectChanges();
+    // this.ref.detectChanges();
   }
 
   ngOnInit() {

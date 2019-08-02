@@ -1,6 +1,7 @@
-import { Component, AfterViewInit, ElementRef, Output, HostListener } from '@angular/core';
+import { Component, AfterViewInit, ElementRef, Output, NgZone } from '@angular/core';
 import { UserSessionDetails } from 'src/app/modules/shared/model/user-session-details';
 import { EventEmitter } from "@angular/core";
+import { environment } from '../../../../../environments/environment';
 
 declare const gapi: any;
 
@@ -11,24 +12,14 @@ declare const gapi: any;
 })
 export class GoogleSigninComponent implements AfterViewInit {
 
-  private clientId: string = '842559739559-44i02i0se3q9a1j06ns081731phou72t.apps.googleusercontent.com';
-
-  private scope = [
-    'profile',
-    'email',
-    'https://www.googleapis.com/auth/plus.me',
-    'https://www.googleapis.com/auth/contacts.readonly',
-    'https://www.googleapis.com/auth/admin.directory.user.readonly'
-  ].join(' ');
-
   public auth2: any;
 
   googleInit() {
     gapi.load('auth2', () => {
       this.auth2 = gapi.auth2.init({
-        client_id: this.clientId,
+        client_id: environment.google_client_id,
         cookiepolicy: 'single_host_origin',
-        scope: this.scope
+        scope: environment.google_api_profiles
       });
       this.attachSignin(this.element.nativeElement.firstChild);
     });
@@ -36,28 +27,28 @@ export class GoogleSigninComponent implements AfterViewInit {
 
   attachSignin(element) {
     this.auth2.attachClickHandler(element, {}, (googleUser) => {
-      let profile = googleUser.getBasicProfile();
+      this.ngZone.run(() => {
+        let profile = googleUser.getBasicProfile();
 
-      let sessionDetails = new UserSessionDetails();
-      sessionDetails.google_access_token = googleUser.getAuthResponse().id_token
-      sessionDetails.google_user_id = profile.getId()
-      sessionDetails.name = profile.getName();
-      sessionDetails.email = profile.getEmail();
-      sessionDetails.image_url = profile.getImageUrl();
+        let sessionDetails = new UserSessionDetails();
+        sessionDetails.google_access_token = googleUser.getAuthResponse().id_token
+        sessionDetails.google_user_id = profile.getId()
+        sessionDetails.name = profile.getName();
+        sessionDetails.email = profile.getEmail();
+        sessionDetails.image_url = profile.getImageUrl();
 
-      this.signin.emit(sessionDetails);
+        this.signin.emit(sessionDetails);
 
+      });
     }, (err) => {
       console.log(JSON.stringify(err, undefined, 2));
     });
   }
 
   @Output()
-  private signin: EventEmitter<UserSessionDetails>;
+  private signin: EventEmitter<UserSessionDetails> = new EventEmitter();
 
-  constructor(private element: ElementRef) {
-    this.signin = new EventEmitter()
-  }
+  constructor(private ngZone: NgZone, private element: ElementRef) { }
 
   ngAfterViewInit(): void {
     this.googleInit();
