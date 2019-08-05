@@ -1,0 +1,81 @@
+{
+	"variables": [],
+	"info": {
+		"name": "ApiAdvisor",
+		"_postman_id": "70232cd8-7ab3-65c2-4358-3967b73590f7",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Post",
+			"request": {
+				"url": "",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get",
+			"request": {
+				"url": "http://localhost:9888/advices",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Delete",
+			"request": {
+				"url": "http://localhost:9888/advices",
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "POST_AUTH_VALIDATE",
+			"request": {
+				"url": "http://localhost:9666/validate",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"email\": \"tentativafc@gmail.com\",\n\"google_access_token\": \"ya29.GlxYB5nghmpluCimgE9wU_6bxtBGyfXC-6h6ecNKD0yEXghov7kJPxr1FoYs1u4acvGY3Xh6A_6pVxAUfsh-DtohiWCdmt4PbLYT6QhnVXhg54Hx2ntMmkzqvGEFpw\",\n\"google_user_id\": \"102189745468728592976\",\n\"name\": \"Marcelo Ortiz de Santana\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Hello Testing Token",
+			"request": {
+				"url": "localhost:9666/hello",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2VtYWlsIjoidGVudGF0aXZhZmNAZ21haWwuY29tIiwidXNlcl9pZCI6IjE1NjUwMjM5MTY2NzYiLCJnb29nbGVfdXNlcl9pZCI6IjEwMjE4OTc0NTQ2ODcyODU5Mjk3NiJ9.STdhW29yly6vaWe7E5U2-br9nQSgb5sMldu-azZO-lSRp7bBPic3xdoebI14ssXXYhl5fwGIY62-PYdocS4L_A",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
