@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: advisor-auth-service
+  data:
+    cassandra:
+      keyspace_name: advisor_ks
+      contact_points: localhost
+      port: 9042

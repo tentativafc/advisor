@@ -29,9 +29,8 @@ export class GoogleSigninComponent implements AfterViewInit {
     this.auth2.attachClickHandler(element, {}, (googleUser) => {
       this.ngZone.run(() => {
         let profile = googleUser.getBasicProfile();
-
         let sessionDetails = new UserSessionDetails();
-        sessionDetails.google_access_token = googleUser.getAuthResponse().id_token
+        sessionDetails.google_access_token = googleUser.getAuthResponse().access_token;
         sessionDetails.google_user_id = profile.getId()
         sessionDetails.name = profile.getName();
         sessionDetails.email = profile.getEmail();

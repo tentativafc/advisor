@@ -9,7 +9,11 @@ export class AuthenticationService {
   constructor(private apiService: ApiService) { }
 
   validateToken(userSessionDetails: UserSessionDetails): Observable<UserSessionDetails> {
-    return this.apiService.post('/auth/api', userSessionDetails);
+    return this.apiService.post('/auth/api/validate', userSessionDetails);
+  }
+
+  invalidateToken(userSessionDetails: UserSessionDetails): Observable<UserSessionDetails> {
+    return this.apiService.post('/auth/api/invalidate', userSessionDetails);
   }
 
 }

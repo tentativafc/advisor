@@ -1,8 +1,9 @@
+const USER_DETAILS_STORAGE_KEY = "advisor_user_session_details";
+
 import { Component, OnInit, Input } from '@angular/core';
 import { StorageService } from '../../storage.service';
 import { UserSessionDetails } from '../../model/user-session-details';
 import { AuthenticationService } from 'src/app/modules/auth/authentication.service';
-import { ChangeDetectorRef } from '@angular/core'
 
 @Component({
   selector: 'app-header',
@@ -18,36 +19,35 @@ export class HeaderComponent implements OnInit {
 
   userSessionDetails: UserSessionDetails;
 
-  constructor(private storageService: StorageService) { }
-  // constructor(private authenticationService: AuthenticationService, private storageService: StorageService, private ref: ChangeDetectorRef) { }
+  constructor(private storageService: StorageService, private authenticationService: AuthenticationService) { }
 
   userSigninHandler(event: UserSessionDetails) {
-    this.authenticated = null;
-    this.authenticated = true;
-    this.userSessionDetails = event;
-    this.storageService.saveObjectItem("advisor_user_session_details", this.userSessionDetails);
-    // this.ref.detectChanges();
+    this.validateToken(event);
   }
 
   userSignoutHandler(event: null) {
-    console.log("######## MAMA SIGNOUT");
-    this.authenticated = null;
-    this.authenticated = false;
-    this.storageService.removeItem("advisor_user_session_details");
-    // this.ref.detectChanges();
+    this.storageService.removeItem(USER_DETAILS_STORAGE_KEY);
   }
 
   ngOnInit() {
     this.authenticated = false;
-    this.userSessionDetails = this.storageService.getObjectItem('advisor_user_session_details');
-    if (this.userSessionDetails) {
-      this.authenticated = true;
+    let userSessionDetail: UserSessionDetails = this.storageService.getObjectItem(USER_DETAILS_STORAGE_KEY);
+    if (userSessionDetail) {
+      this.validateToken(userSessionDetail)
     }
-    // this.authenticationService.validateToken(this.userSessionDetails).subscribe((data) => console.log(data));
   }
 
   onClick() {
     this.authenticated = !this.authenticated;
+  }
+
+  validateToken(userSessionDetails: UserSessionDetails) {
+    console.log(userSessionDetails.google_access_token);
+    //this.authenticationService.validateToken(userSessionDetails).subscribe((validatedUserSessionDetails: UserSessionDetails) => {
+    // this.userSessionDetails = validatedUserSessionDetails;
+    this.authenticated = true;
+    //  this.storageService.saveObjectItem(USER_DETAILS_STORAGE_KEY, this.userSessionDetails);
+    // });
   }
 
 }
