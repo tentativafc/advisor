@@ -1,9 +1,9 @@
 package ortiz.advisor.auth.controllers;
 
+import com.netflix.discovery.converters.Auto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,39 +14,35 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
-import ortiz.advisor.auth.model.GoogleTokenInfo;
-import ortiz.advisor.auth.model.User;
-import ortiz.advisor.auth.model.UserSessionDetails;
-import ortiz.advisor.auth.model.repository.UserRepository;
-import ortiz.advisor.auth.util.JwtUtil;
+import ortiz.security.model.GoogleTokenInfo;
+import ortiz.security.model.User;
+import ortiz.security.model.UserSessionDetails;
+import ortiz.security.model.repository.UserRepository;
+import ortiz.security.services.GoogleTokenService;
+import ortiz.security.utils.JwtUtil;
+
 
 @RestController
-@ConfigurationProperties(prefix = "ortiz.auth")
 public class AuthController {
 
     private Logger logger = LoggerFactory.getLogger(AuthController.class);
 
-    private String googleTokenServiceInfoUrl;
-
+    @Autowired
+    private GoogleTokenService googleTokenService;
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private JwtUtil jwtUtil;
 
     @PostMapping("/validate")
     public ResponseEntity<UserSessionDetails> login(@RequestBody UserSessionDetails userSessionDetails) {
 
-        logger.info("Invoking Google Token Service Validation: {}", googleTokenServiceInfoUrl);
-
-        RestTemplate restTemplate = new RestTemplate();
+        logger.info("Validating the user session...");
 
         User user = userRepository.findByGoogleUserId(userSessionDetails.getGoogleUserId());
 
         try {
-            ResponseEntity<GoogleTokenInfo> response = restTemplate.getForEntity(googleTokenServiceInfoUrl, GoogleTokenInfo.class, userSessionDetails.getGoogleAccessToken());
-
-            GoogleTokenInfo googleTokenInfo = response.getBody();
+            GoogleTokenInfo googleTokenInfo = googleTokenService.validateToken(userSessionDetails.getGoogleAccessToken());
 
             if (user == null) {
                 user = new User();
@@ -86,11 +82,5 @@ public class AuthController {
         return "Hello World";
     }
 
-    public String getGoogleTokenServiceInfoUrl() {
-        return googleTokenServiceInfoUrl;
-    }
 
-    public void setGoogleTokenServiceInfoUrl(String googleTokenServiceInfoUrl) {
-        this.googleTokenServiceInfoUrl = googleTokenServiceInfoUrl;
-    }
 }

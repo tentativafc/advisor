@@ -18,13 +18,13 @@ services:
     ports:
       - '9042:9042'
 
-  nginx:
-    build:
-      dockerfile: Dockerfile
-      context: nginx
-    restart: always
-    ports:
-      - '3051:80'
+#  nginx:
+#    build:
+#      dockerfile: Dockerfile
+#      context: nginx
+#    restart: always
+#    ports:
+#      - '3051:80'
 
   config-server:
     build:
@@ -66,25 +66,25 @@ services:
       - discovery-server
     command: ["./wait-for-it.sh", "discovery-server:9777", "--", "mvn", "clean", "compile", "spring-boot:run"]
 
-  advisor-auth:
-      build:
-        context: advisor-auth-service
-        dockerfile: Dockerfile
-      ports:
-        - '9666:9666'
-      volumes:
-        - maven-repo:/root/.m2
-      depends_on:
-        - config-server
-        - discovery-server
-      command: ["./wait-for-it.sh", "discovery-server:9777", "--", "mvn", "clean", "compile", "spring-boot:run"]
-
-  frontend:
-    build:
-      context: advisor-frontend
-      dockerfile: Dockerfile
-    ports:
-      - '4200:4200'
+#  advisor-auth:
+#      build:
+#        context: advisor-auth-service
+#        dockerfile: Dockerfile
+#      ports:
+#        - '9666:9666'
+#      volumes:
+#        - maven-repo:/root/.m2
+#      depends_on:
+#        - config-server
+#        - discovery-server
+#      command: ["./wait-for-it.sh", "discovery-server:9777", "--", "mvn", "clean", "compile", "spring-boot:run"]
+#
+#  frontend:
+#    build:
+#      context: advisor-frontend
+#      dockerfile: Dockerfile
+#    ports:
+#      - '4200:4200'
 
 volumes:
   maven-repo:

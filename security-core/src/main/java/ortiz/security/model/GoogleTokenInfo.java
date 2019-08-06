@@ -1,4 +1,4 @@
-package ortiz.advisor.auth.model;
+package ortiz.security.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

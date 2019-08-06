@@ -1,6 +1,6 @@
-package ortiz.advisor.auth.filters;
+package ortiz.security.filters;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -8,8 +8,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import ortiz.advisor.auth.model.User;
-import ortiz.advisor.auth.util.JwtUtil;
+import ortiz.security.model.User;
+import ortiz.security.utils.JwtUtil;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
