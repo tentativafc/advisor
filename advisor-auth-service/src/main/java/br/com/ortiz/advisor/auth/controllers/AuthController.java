@@ -71,7 +71,10 @@ public class AuthController {
 
     @PostMapping("/invalidate")
     public ResponseEntity<UserSessionDetails> logout(@RequestBody UserSessionDetails userSessionDetails) {
+        User user = userRepository.findByGoogleUserId(userSessionDetails.getGoogleUserId());
+        user.setAccessToken(null);
+        userRepository.save(user);
+        userSessionDetails.setAccessToken(null);
         return new ResponseEntity<>(userSessionDetails, HttpStatus.OK);
     }
-
 }

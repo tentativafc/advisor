@@ -16,6 +16,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Optional;
 
 
@@ -27,19 +28,17 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager, ApplicationContext ctx) {
         super(authenticationManager);
-         this.jwtUtil = ctx.getBean(JwtService.class);
+        this.jwtUtil = ctx.getBean(JwtService.class);
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
 
         UsernamePasswordAuthenticationToken authentication = getAuthentication(request);
-        if(authentication == null) {
-            chain.doFilter(request, response);
-            return;
+        if (authentication != null) {
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         }
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
+        chain.doFilter(request, response);
     }
 
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
@@ -47,7 +46,8 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
         if (StringUtils.isNotEmpty(token) && token.startsWith(JwtService.TOKEN_PREFIX)) {
             Optional<User> userFromToken = jwtUtil.getUserFromToken(token);
             if (userFromToken.isPresent()) {
-                return new UsernamePasswordAuthenticationToken(userFromToken.get().getId(), null, null);
+                logger.info("Secured...");
+                return new UsernamePasswordAuthenticationToken(userFromToken.get().getId(), null, Collections.emptyList());
             }
         }
         return null;

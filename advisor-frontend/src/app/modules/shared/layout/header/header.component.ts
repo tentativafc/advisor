@@ -25,7 +25,8 @@ export class HeaderComponent implements OnInit {
   }
 
   userSignoutHandler(event: null) {
-    this.userDetailsStorageService.deleteUserSession();
+    let userSessionDetail: UserSessionDetails = this.userDetailsStorageService.getUserSession();
+    this.invalidateToken(userSessionDetail);
   }
 
   ngOnInit() {
@@ -41,11 +42,19 @@ export class HeaderComponent implements OnInit {
   }
 
   validateToken(userSessionDetails: UserSessionDetails) {
-    console.log(userSessionDetails.google_access_token);
     this.authenticationService.validateToken(userSessionDetails).subscribe((validatedUserSessionDetails: UserSessionDetails) => {
+      console.log(validatedUserSessionDetails.access_token);
       this.userSessionDetails = validatedUserSessionDetails;
       this.authenticated = true;
       this.userDetailsStorageService.saveUserSession(this.userSessionDetails);
+    });
+  }
+
+  invalidateToken(userSessionDetails: UserSessionDetails) {
+    console.log(userSessionDetails.google_access_token);
+    this.authenticationService.invalidateToken(userSessionDetails).subscribe(() => {
+      this.authenticated = false;
+      this.userDetailsStorageService.deleteUserSession();
     });
   }
 
