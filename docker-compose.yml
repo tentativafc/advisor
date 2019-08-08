@@ -18,13 +18,17 @@ services:
     ports:
       - '9042:9042'
 
-#  nginx:
-#    build:
-#      dockerfile: Dockerfile
-#      context: nginx
-#    restart: always
-#    ports:
-#      - '3051:80'
+  nginx:
+    build:
+      dockerfile: Dockerfile
+      context: nginx
+    restart: always
+    ports:
+      - '3051:80'
+    depends_on:
+      - advisor
+      - advisor-auth
+      - frontend
 
   config-server:
     build:
@@ -34,7 +38,8 @@ services:
     ports:
       - '8888:8888'
     volumes:
-      - maven-repo:/root/.m2
+      - /home/marcelo/.m2:/root/.m2
+      - ./advisor-config-server:/app
     depends_on:
       - redis
     command: ["./wait-for-it.sh", "redis:6379", "--", "mvn", "spring-boot:run"]
@@ -47,7 +52,8 @@ services:
     ports:
       - '9777:9777'
     volumes:
-      - maven-repo:/root/.m2
+      - /home/marcelo/.m2:/root/.m2
+      - ./advisor-discovery-server:/app
     depends_on:
       - config-server
     command: ["./wait-for-it.sh", "config-server:8888", "--", "mvn", "spring-boot:run"]
@@ -59,32 +65,35 @@ services:
     ports:
       - '9888:9888'
     volumes:
-      - maven-repo:/root/.m2
+      - /home/marcelo/.m2:/root/.m2
+      - ./advisor-service:/app
     depends_on:
       - redis
       - config-server
       - discovery-server
     command: ["./wait-for-it.sh", "discovery-server:9777", "--", "mvn", "clean", "compile", "spring-boot:run"]
 
-#  advisor-auth:
-#      build:
-#        context: advisor-auth-service
-#        dockerfile: Dockerfile
-#      ports:
-#        - '9666:9666'
-#      volumes:
-#        - maven-repo:/root/.m2
-#      depends_on:
-#        - config-server
-#        - discovery-server
-#      command: ["./wait-for-it.sh", "discovery-server:9777", "--", "mvn", "clean", "compile", "spring-boot:run"]
-#
-#  frontend:
-#    build:
-#      context: advisor-frontend
-#      dockerfile: Dockerfile
-#    ports:
-#      - '4200:4200'
+  advisor-auth:
+      build:
+        context: advisor-auth-service
+        dockerfile: Dockerfile
+      ports:
+        - '9666:9666'
+      volumes:
+        - /home/marcelo/.m2:/root/.m2
+        - ./advisor-auth-service:/app
+      depends_on:
+        - config-server
+        - discovery-server
+        - cassandra
+      command: ["./wait-for-it.sh", "discovery-server:9777", "--", "mvn", "clean", "compile", "spring-boot:run"]
 
-volumes:
-  maven-repo:
+  frontend:
+    build:
+      context: advisor-frontend
+      dockerfile: Dockerfile
+    ports:
+      - '4200:4200'
+    volumes:
+      - /app/node_modules
+      - ./advisor-frontend:/app

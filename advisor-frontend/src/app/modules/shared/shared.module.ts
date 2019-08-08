@@ -5,6 +5,7 @@ import { FooterComponent } from './layout/footer/footer.component';
 import { AuthModule } from '../auth/auth.module';
 import { ApiService } from './api.service';
 import { StorageService } from './storage.service';
+import { UserDetailsStorageService } from './user-details-storage.service';
 
 
 
@@ -18,7 +19,8 @@ import { StorageService } from './storage.service';
   ],
   providers: [
     ApiService,
-    StorageService
+    StorageService,
+    UserDetailsStorageService
   ]
 })
 export class SharedModule { }

@@ -1,1 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=ortiz.security.configuration.SecurityConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=br.com.ortiz.security.SecurityConfiguration
