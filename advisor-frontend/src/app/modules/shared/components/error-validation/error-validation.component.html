@@ -1,0 +1,10 @@
+<ng-content></ng-content>
+<div>
+    {{formGroupValidate.get(controlName).dirty || formGroupValidate.get(controlName).touched}}
+    <div *ngIf="formGroupValidate.get(controlName).invalid && (formGroupValidate.get(controlName).dirty || formGroupValidate.get(controlName).touched)"
+        class="alert alert-danger">
+        <div *ngIf="formGroupValidate.get(controlName).errors.required">
+            {{controlTitle}} is required.
+        </div>
+    </div>
+</div>

@@ -14,19 +14,19 @@ export class ApiService {
     return throwError(error.error);
   }
 
-  get(path: string = '/api', params: HttpParams): Observable<any> {
+  get(path: string = '', params: HttpParams): Observable<any> {
     return this.httpClient.get(`${environment.api_url}${path}`, { ...this.getHeaderOptionsAjax(), params }).pipe(catchError(this.formatErrors));
   }
 
-  post(path: string = '/api', body: Object = {}): Observable<any> {
+  post(path: string = '', body: Object = {}): Observable<any> {
     return this.httpClient.post(`${environment.api_url}${path}`, JSON.stringify(body), this.getHeaderOptionsAjax()).pipe(catchError(this.formatErrors));
   }
 
-  put(path: string = '/api', body: Object = {}): Observable<any> {
+  put(path: string = '', body: Object = {}): Observable<any> {
     return this.httpClient.put(`${environment.api_url}${path}`, JSON.stringify(body), this.getHeaderOptionsAjax()).pipe(catchError(this.formatErrors));
   }
 
-  delete(path: string = '/api', params: HttpParams): Observable<any> {
+  delete(path: string = '', params: HttpParams): Observable<any> {
     return this.httpClient.delete(`${environment.api_url}${path}`, { ...this.getHeaderOptionsAjax(), params }).pipe(catchError(this.formatErrors));
   }
 

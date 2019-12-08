@@ -4,9 +4,10 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthModule } from './modules/auth/auth.module';
-import { AdviceModule } from './modules/advice/advice.module';
 import { SharedModule } from './modules/shared/shared.module';
 import { HttpClientModule} from "@angular/common/http";
+import { ErrorModule } from './modules/error/error.module';
+import { MainModule } from './modules/main/main.module';
 
 @NgModule({
   declarations: [
@@ -17,8 +18,9 @@ import { HttpClientModule} from "@angular/common/http";
     AppRoutingModule,
     HttpClientModule,
     AuthModule,
+    ErrorModule,
     SharedModule,
-    AdviceModule,
+    MainModule
   ],
   providers: [],
   bootstrap: [AppComponent]

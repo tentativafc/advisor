@@ -1,0 +1,92 @@
+<div class="bg-primary">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex align-items-center min-vh-100">
+                    <div class="w-100 d-block bg-white shadow-lg rounded my-5">
+                        <div class="row">
+                            <div class="col-lg-5 d-none d-lg-block bg-register rounded-left"></div>
+                            <div class="col-lg-7">
+                                <div class="p-5">
+                                    <div class="text-center">
+                                        <a href="index.html" class="d-block mb-5">
+                                            <img src="assets/images/logo-dark.png" alt="app-logo" height="18" />
+                                        </a>
+                                    </div>
+                                    <h1 class="h5 mb-1">Create an Account!</h1>
+                                    <p class="text-muted mb-4">Don't have an account? Create your own account, it takes
+                                        less than a minute</p>
+                                    <form class="user" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+                                        <div class="form-group row">
+                                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                                <app-error-validation [formGroupValidate]="registerForm"
+                                                    [controlName]="'firstName'" [controlTitle]="'First Name'">
+                                                    <input type="text" class="form-control form-control-user"
+                                                        id="exampleFirstName" placeholder="First Name"
+                                                        formControlName="firstName">
+                                                </app-error-validation>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <app-error-validation [formGroupValidate]="registerForm"
+                                                    [controlName]="'lastName'" [controlTitle]="'Last Name'">
+                                                    <input type="text" class="form-control form-control-user"
+                                                        id="exampleLastName" placeholder="Last Name"
+                                                        formControlName="lastName">
+                                                </app-error-validation>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <app-error-validation [formGroupValidate]="registerForm"
+                                                [controlName]="'email'" [controlTitle]="'Email Address'">
+                                                <input type="email" class="form-control form-control-user"
+                                                    id="exampleInputEmail" placeholder="Email Address"
+                                                    formControlName="email">
+                                            </app-error-validation>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                                <app-error-validation [formGroupValidate]="registerForm"
+                                                    [controlName]="'password'" [controlTitle]="'Password'">
+                                                    <input type="password" class="form-control form-control-user"
+                                                        id="exampleInputPassword" placeholder="Password"
+                                                        formControlName="password">
+                                                </app-error-validation>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <app-error-validation [formGroupValidate]="registerForm"
+                                                    [controlName]="'passwordConfirm'"
+                                                    [controlTitle]="'Repeat Password'">
+                                                    <input type="password" class="form-control form-control-user"
+                                                        id="exampleRepeatPassword" placeholder="Repeat Password"
+                                                        formControlName="passwordConfirm">
+                                                </app-error-validation>
+                                            </div>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-success btn-block"
+                                            [disabled]="!registerForm.valid">Register Account</button>
+
+                                        <!-- Social login -->
+                                        <app-social-login></app-social-login>
+
+                                    </form>
+
+                                    <div class="row mt-4">
+                                        <div class="col-12 text-center">
+                                            <p class="text-muted mb-0">Already have account? <a href="auth/auth-login"
+                                                    class="text-muted font-weight-medium ml-1"><b>Sign In</b></a></p>
+                                        </div> <!-- end col -->
+                                    </div>
+                                    <!-- end row -->
+                                </div> <!-- end .padding-5 -->
+                            </div> <!-- end col -->
+                        </div> <!-- end row -->
+                    </div> <!-- end .w-100 -->
+                </div> <!-- end .d-flex -->
+            </div> <!-- end col-->
+        </div> <!-- end row -->
+    </div>
+    <!-- end container -->
+</div>
+<!-- end page -->
