@@ -7,6 +7,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 
 import java.util.Optional;
+import java.util.UUID;
 
 
 public class JwtService {
@@ -28,7 +29,7 @@ public class JwtService {
         try {
             JWTVerifier verifier = JWT.require(Algorithm.HMAC512(tokenSecret)).build();
             DecodedJWT decodedJWT = verifier.verify(token.replace(TOKEN_PREFIX, ""));
-            String userId = decodedJWT.getClaim(USER_ID).asString();
+            UUID userId = UUID.fromString(decodedJWT.getClaim(USER_ID).asString());
             String email = decodedJWT.getClaim(USER_EMAIL).asString();
             String googleUserId = decodedJWT.getClaim(GOOGLE_USER_ID).asString();
             user = new User();
@@ -41,23 +42,15 @@ public class JwtService {
         return Optional.ofNullable(user);
     }
 
-    public Optional<String> getUserIdFromToken(String token) {
+    public Optional<UUID> getUserIdFromToken(String token) {
         return getUserFromToken(token).map((User user) -> user.getId());
     }
 
     public String getTokenFromUser(User user) {
         // TODO Expires
-        return JWT.create().withClaim(USER_ID, user.getId())
+        return JWT.create().withClaim(USER_ID, user.getId().toString())
                 .withClaim(USER_EMAIL, user.getEmail())
                 .withClaim(GOOGLE_USER_ID, user.getGoogleUserId())
                 .sign(Algorithm.HMAC512(tokenSecret));
-    }
-
-    public String getTokenSecret() {
-        return tokenSecret;
-    }
-
-    public void setTokenSecret(String tokenSecret) {
-        this.tokenSecret = tokenSecret;
     }
 }

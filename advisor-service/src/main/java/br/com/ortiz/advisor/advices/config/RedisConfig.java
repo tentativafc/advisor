@@ -1,4 +1,4 @@
-package br.com.ortiz.advisor.config;
+package br.com.ortiz.advisor.advices.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -8,8 +8,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 
 @Configuration
-@EnableRedisRepositories(basePackages = "ortiz.advisor.advices.model")
+@EnableRedisRepositories(basePackages = "br.com.ortiz.advisor.advices.model")
 public class RedisConfig {
+
     @Value("${spring.redis.host}")
     private String host;
     @Value("${spring.redis.port}")

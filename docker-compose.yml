@@ -7,16 +7,20 @@ services:
     restart: always
     ports:
       - "6379:6379"
+    networks:
+      - default
 
   cassandra:
     image: 'cassandra:3.11.4'
     restart: always
+    ports:
+      - '9042:9042'
+    networks:
+      - default
     volumes:
       - /var/data/advisor/cassandra:/var/lib/cassandra
       - ./cassandra/db-init-scripts:/docker-entrypoint-initdb.d
     command: "sh /docker-entrypoint-initdb.d/cassandra-init.sh"
-    ports:
-      - '9042:9042'
 
   nginx:
     build:
@@ -25,8 +29,10 @@ services:
     restart: always
     ports:
       - '3051:80'
+    networks:
+      - default
     depends_on:
-#      - advisor
+      - advisor
       - advisor-auth
       - frontend
 
@@ -37,6 +43,8 @@ services:
     restart: always
     ports:
       - '8888:8888'
+    networks:
+      - default
     volumes:
       - maven-repo:/root/.m2
       - ./advisor-config-server:/app
@@ -51,6 +59,8 @@ services:
     restart: always
     ports:
       - '9777:9777'
+    networks:
+      - default
     volumes:
       - maven-repo:/root/.m2
       - ./advisor-discovery-server:/app
@@ -65,20 +75,23 @@ services:
     volumes:
       - maven-repo:/root/.m2
 
-#  advisor:
-#    build:
-#      context: advisor-service
-#      dockerfile: Dockerfile
-#    ports:
-#      - '9888:9888'
-#    volumes:
-#      - maven-repo:/root/.m2
-#      - ./advisor-service:/app
-#    depends_on:
-#      - redis
-#      - config-server
-#      - discovery-server
-#    command: ["./wait-for-it.sh", "discovery-server:9777", "--", "mvn", "clean", "compile", "spring-boot:run"]
+  advisor:
+    build:
+      context: advisor-service
+      dockerfile: Dockerfile
+    ports:
+      - '9888:9888'
+    networks:
+      - default
+    volumes:
+      - maven-repo:/root/.m2
+      - ./advisor-service:/app
+    depends_on:
+      - redis
+      - config-server
+      - discovery-server
+    command: ["./wait-for-it.sh", "discovery-server:9777", "--", "mvn", "clean", "compile", "spring-boot:run"]
+
 
   advisor-auth:
       build:
@@ -86,6 +99,8 @@ services:
         dockerfile: Dockerfile
       ports:
         - '9666:9666'
+      networks:
+        - default
       volumes:
         - maven-repo:/root/.m2
         - ./advisor-auth-service:/app
@@ -102,9 +117,18 @@ services:
       dockerfile: Dockerfile
     ports:
       - '4200:4200'
+    networks:
+      - default
     volumes:
       - /app/node_modules
       - ./advisor-frontend:/app
 
+
+networks:
+  default:
+    external:
+      name: advisor-net
+
 volumes:
   maven-repo:
+

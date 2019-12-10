@@ -2,6 +2,13 @@
 
 Project to get advices from Assets, using microservices.
 
+### Prerequisites:
+ 
+* Needs to have a network called **advisor-net**
+
+```sh
+docker network create --driver bridge advisor-net
+```
 
 ### Services and port numbers
 

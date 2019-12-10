@@ -23,14 +23,8 @@ public class GoogleTokenService {
 
         ResponseEntity<GoogleTokenInfo> response = restTemplate.getForEntity(configProperties.getGoogleTokenInfoServiceUrl(), GoogleTokenInfo.class, googleToken);
         GoogleTokenInfo googleTokenInfo = response.getBody();
+
         return googleTokenInfo;
     }
 
-    public ConfigProperties getConfigProperties() {
-        return configProperties;
-    }
-
-    public void setConfigProperties(ConfigProperties configProperties) {
-        this.configProperties = configProperties;
-    }
 }

@@ -1,9 +1,9 @@
 package br.com.ortiz.advisor.advices.controllers;
 
-import br.com.ortiz.advisor.advices.model.dao.AdviceDao;
+import br.com.ortiz.advisor.advices.model.repositories.AdviceDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import br.com.ortiz.advisor.advices.model.entity.Advice;
+import br.com.ortiz.advisor.advices.model.Advice;
 
 import java.util.List;
 

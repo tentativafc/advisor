@@ -7,4 +7,5 @@ import br.com.ortiz.security.model.User;
 @Repository
 public interface UserRepository extends CrudRepository<User, String> {
     User findByGoogleUserId(String googleUserId);
+    User findByEmail(String email);
 }

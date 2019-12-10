@@ -1,7 +1,1 @@
-spring:
-  application:
-    name: advisor-service
-
-ortiz:
-  auth:
-    googleTokenServiceInfoUrl: http://xpto
+debug: true

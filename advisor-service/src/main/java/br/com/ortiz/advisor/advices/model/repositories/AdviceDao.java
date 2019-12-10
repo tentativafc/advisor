@@ -1,8 +1,8 @@
-package br.com.ortiz.advisor.advices.model.dao;
+package br.com.ortiz.advisor.advices.model.repositories;
 
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.stereotype.Repository;
-import br.com.ortiz.advisor.advices.model.entity.Advice;
+import br.com.ortiz.advisor.advices.model.Advice;
 
 import javax.annotation.Resource;
 import java.util.List;

@@ -1,4 +1,4 @@
-package br.com.ortiz.advisor;
+package br.com.ortiz.advisor.advices;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
