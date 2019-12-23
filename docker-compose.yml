@@ -36,45 +36,6 @@ services:
       - advisor-auth
       - frontend
 
-  config-server:
-    build:
-      context: advisor-config-server
-      dockerfile: Dockerfile
-    restart: always
-    ports:
-      - '8888:8888'
-    networks:
-      - default
-    volumes:
-      - maven-repo:/root/.m2
-      - ./advisor-config-server:/app
-    depends_on:
-      - redis
-    command: ["./wait-for-it.sh", "redis:6379", "--", "mvn", "spring-boot:run"]
-
-  discovery-server:
-    build:
-      context: advisor-discovery-server
-      dockerfile: Dockerfile
-    restart: always
-    ports:
-      - '9777:9777'
-    networks:
-      - default
-    volumes:
-      - maven-repo:/root/.m2
-      - ./advisor-discovery-server:/app
-    depends_on:
-      - config-server
-    command: ["./wait-for-it.sh", "config-server:8888", "--", "mvn", "spring-boot:run"]
-
-  security-core:
-    build:
-      context: security-core
-      dockerfile: Dockerfile
-    volumes:
-      - maven-repo:/root/.m2
-
   advisor:
     build:
       context: advisor-service
@@ -91,25 +52,6 @@ services:
       - config-server
       - discovery-server
     command: ["./wait-for-it.sh", "discovery-server:9777", "--", "mvn", "clean", "compile", "spring-boot:run"]
-
-
-  advisor-auth:
-      build:
-        context: advisor-auth-service
-        dockerfile: Dockerfile
-      ports:
-        - '9666:9666'
-      networks:
-        - default
-      volumes:
-        - maven-repo:/root/.m2
-        - ./advisor-auth-service:/app
-      depends_on:
-        - security-core
-        - config-server
-        - discovery-server
-        - cassandra
-      command: ["./wait-for-it.sh", "discovery-server:9777", "--", "mvn", "clean", "compile", "spring-boot:run"]
 
   frontend:
     build:

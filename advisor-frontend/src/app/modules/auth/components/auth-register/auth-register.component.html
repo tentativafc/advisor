@@ -21,18 +21,18 @@
                                         <div class="form-group row">
                                             <div class="col-sm-6 mb-3 mb-sm-0">
                                                 <app-error-validation [formGroupValidate]="registerForm"
-                                                    [controlName]="'firstName'" [controlTitle]="'First Name'">
+                                                    [controlName]="'first_name'" [controlTitle]="'First Name'">
                                                     <input type="text" class="form-control form-control-user"
                                                         id="exampleFirstName" placeholder="First Name"
-                                                        formControlName="firstName">
+                                                        formControlName="first_name">
                                                 </app-error-validation>
                                             </div>
                                             <div class="col-sm-6">
                                                 <app-error-validation [formGroupValidate]="registerForm"
-                                                    [controlName]="'lastName'" [controlTitle]="'Last Name'">
+                                                    [controlName]="'last_name'" [controlTitle]="'Last Name'">
                                                     <input type="text" class="form-control form-control-user"
                                                         id="exampleLastName" placeholder="Last Name"
-                                                        formControlName="lastName">
+                                                        formControlName="last_name">
                                                 </app-error-validation>
                                             </div>
                                         </div>
@@ -55,11 +55,11 @@
                                             </div>
                                             <div class="col-sm-6">
                                                 <app-error-validation [formGroupValidate]="registerForm"
-                                                    [controlName]="'passwordConfirm'"
+                                                    [controlName]="'password_confirm'"
                                                     [controlTitle]="'Repeat Password'">
                                                     <input type="password" class="form-control form-control-user"
                                                         id="exampleRepeatPassword" placeholder="Repeat Password"
-                                                        formControlName="passwordConfirm">
+                                                        formControlName="password_confirm">
                                                 </app-error-validation>
                                             </div>
                                         </div>

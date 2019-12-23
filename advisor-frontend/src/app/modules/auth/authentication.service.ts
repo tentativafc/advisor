@@ -12,16 +12,16 @@ export class AuthenticationService {
 
   constructor(private userDetailsStorageService: UserDetailsStorageService, private apiService: ApiService) { }
 
-  login(login: Login) {
-    return this.apiService.post('/auth/login', login);
+  login(login: Login): Observable<UserSessionDetails> {
+    return this.apiService.post('/auth/api/login', login);
   }
 
-  register(register: Register) {
-    return this.apiService.post('/auth/register', register);
+  register(register: Register): Observable<UserSessionDetails> {
+    return this.apiService.post('/auth/api/register', register);
   }
 
   recoverPassword(recover: Recover) {
-    return this.apiService.post('/auth/login', recover);
+    return this.apiService.post('/auth/api/recover_password', recover);
   }
 
   isLoggedIn(): boolean {

@@ -1,6 +1,0 @@
-spring:
-  application:
-    name: advisor-discovery-server
-  cloud:
-    config:
-      uri: http://config-server:8888

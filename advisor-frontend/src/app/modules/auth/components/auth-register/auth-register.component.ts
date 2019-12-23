@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
+import { Register } from 'src/app/modules/shared/model/register';
+import { AuthenticationService } from '../../authentication.service';
+import { UserSessionDetails } from 'src/app/modules/shared/model/user-session-details';
+import { UserDetails } from 'src/app/modules/shared/model/user-details';
+import { UserDetailsStorageService } from 'src/app/modules/shared/user-details-storage.service';
 
 @Component({
   selector: 'app-auth-register',
@@ -9,20 +14,30 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 export class AuthRegisterComponent implements OnInit {
 
   registerForm = this.fb.group({
-    firstName: ['', Validators.required],
-    lastName: ['', Validators.required],
+    first_name: ['', Validators.required],
+    last_name: ['', Validators.required],
     email: ['', Validators.required],
     password: ['', Validators.required],
-    passwordConfirm: ['', Validators.required],
+    password_confirm: ['', Validators.required],
   });
 
-  constructor(private fb: FormBuilder) { }
+  private register: Register;
+  private userSessionDetails: UserSessionDetails;
+  
+
+  constructor(private fb: FormBuilder, private authenticationService: AuthenticationService, private userDetailsStorageService: UserDetailsStorageService) { }
 
   ngOnInit() {
   }
 
   onSubmit() {
-    console.log("Submeteu");
+    console.log("Submit...")
+    this.register = {... this.registerForm.getRawValue()};
+    this.authenticationService.register(this.register).subscribe((registeredUser: UserSessionDetails) => {
+      console.log(registeredUser.access_token);
+      this.userSessionDetails = registeredUser;
+      this.userDetailsStorageService.saveUserSession(this.userSessionDetails);
+    });
   }
 
 }
